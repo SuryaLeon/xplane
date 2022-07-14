@@ -1,0 +1,28 @@
+--- 
+apiVersion: database.aws.crossplane.io/v1beta1
+kind: RDSInstance
+metadata: 
+  name: test2rds
+spec: 
+  forProvider: 
+    allocatedStorage: 20
+    dbInstanceClass: db.t2.small
+    dbName: test2rds
+    engine: PostgreSQL
+    engineVersion: "12.9-R1"
+    masterPasswordSecretRef: 
+      key: password
+      name: pswdrds
+      namespace: crossplane-system
+    masterUsername: postgres
+    port: 5432
+    publiclyAccessible: true
+    region: us-east-1
+    skipFinalSnapshotBeforeDeletion: true
+  providerConfigRef: 
+    name: awsprvcfg
+  providerRef: 
+    name: crossplane-provider-aws
+  writeConnectionSecretToRef: 
+    name: rds-sec
+    namespace: crossplane-system

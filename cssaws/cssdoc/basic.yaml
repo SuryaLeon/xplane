@@ -1,0 +1,30 @@
+apiVersion: database.aws.crossplane.io/v1beta1
+kind: RDSInstance
+metadata:
+  annotations:
+    crossplane.io/external-name: basic
+  name: basic2
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    dbInstanceClass: db.t2.small
+    engine: postgre
+    region: us-east-1
+    masterUsername: pg
+    masterPasswordSecretRef:
+     name: pswdrds
+     namespace: crossplane-system
+     key: password
+    vpcSecurityGroupIds: 
+     - "sg-96c342b9"
+    tags:
+    - key: crossplane-kind
+      value: rdsinstance.database.aws.crossplane.io
+    - key: crossplane-name
+      value: basic
+    - key: crossplane-providerconfig
+      value: awsprvcfg
+  providerConfigRef:
+    name: awsprvcfg
+  providerRef:
+    name: crossplane-provider-aws

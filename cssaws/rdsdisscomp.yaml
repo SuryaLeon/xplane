@@ -1,0 +1,62 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  creationTimestamp: "2022-05-17T10:12:10Z"
+  deletionGracePeriodSeconds: 0
+  deletionTimestamp: "2022-05-18T04:17:02Z"
+  finalizers:
+  - offered.apiextensions.crossplane.io
+  generation: 2
+  name: rdsdisscomp
+  resourceVersion: "277905"
+  uid: 7b0ee5aa-5992-4201-b486-24d5092cc68b
+spec:
+  claimNames:
+    kind: PostgreSQLInstance
+    plural: postgresqlinstances
+  connectionSecretKeys:
+  - username
+  - password
+  - endpoint
+  - port
+  group: database.example.org
+  names:
+    kind: CompositePostgreSQLInstance
+    plural: compositepostgresqlinstances
+  versions:
+  - name: v1alpha1
+    referenceable: true
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:
+            properties:
+              parameters:
+                properties:
+                  storageGB:
+                    type: integer
+                required:
+                - storageGB
+                type: object
+            required:
+            - parameters
+            type: object
+        type: object
+    served: true
+status:
+  conditions:
+  - lastTransitionTime: "2022-05-18T04:17:58Z"
+    reason: TerminatingCompositeResourceClaim
+    status: "False"
+    type: Offered
+  - lastTransitionTime: "2022-05-18T04:17:58Z"
+    reason: TerminatingCompositeResource
+    status: "False"
+    type: Established
+  controllers:
+    compositeResourceClaimType:
+      apiVersion: database.example.org/v1alpha1
+      kind: PostgreSQLInstance
+    compositeResourceType:
+      apiVersion: ""
+      kind: ""
