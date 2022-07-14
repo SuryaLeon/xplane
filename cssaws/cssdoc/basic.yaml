@@ -16,7 +16,7 @@ spec:
      namespace: crossplane-system
      key: password
     vpcSecurityGroupIds: 
-     - "sg-96c342b9"
+     - "sgid"
     tags:
     - key: crossplane-kind
       value: rdsinstance.database.aws.crossplane.io
