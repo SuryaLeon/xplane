@@ -1,0 +1,19 @@
+apiVersion: database.aws.crossplane.io/v1beta1
+kind: DBSubnetGroup
+metadata:
+  name: sample-subnet-group
+spec:
+  forProvider:
+    region: us-east-1
+    description: "sample group"
+    subnetIdRefs:
+     - name: sample-subnet2
+     - name: subnet-f509b2b8
+    subnetIds: 
+     - subnet-05c62d63
+     - subnet-db5bf6d5
+     - subnet-05ab5a24
+  providerConfigRef:
+    name: awsprvcfg
+  providerRef:
+    name: crossplane-provider-aws

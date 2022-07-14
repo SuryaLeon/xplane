@@ -1,0 +1,101 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: drds
+  labels:
+    provider: aws-provider
+    guide: quickstart
+    vpc: default
+spec:
+  writeConnectionSecretsToNamespace: crossplane-system
+  compositeTypeRef:
+    apiVersion: database.aws.crossplane.io/v1beta1
+    kind: RDSInstance
+  resources:
+    - name: rsg
+      base:
+        apiVersion: ec2.aws.crossplane.io/v1beta1
+        kind: SecurityGroup
+        spec:
+          providerConfigRef:
+            name: awsprvcfg
+          forProvider:
+            tags:
+             - key: ryt
+               value: wrng
+            region: us-east-1
+            vpcId: default
+            groupName: default
+            description: default
+            ingress:
+              - fromPort: 5432
+                toPort: 5432
+                ipProtocol: tcp
+                ipRanges:
+                  - cidrIp: 172.31.0.0/16
+      patches:
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "spec.forProvider.groupName"
+          transforms:
+           - type: string
+             string:
+                fmt: "%s-sgdan"
+    - name: rdsinstance
+      base:
+        apiVersion: database.aws.crossplane.io/v1beta1
+        kind: RDSInstance
+        spec:
+          providerConfigRef:
+            name: awsprvcfg
+          forProvider:
+            dbSubnetGroupName: "default"
+            region: us-east-1
+            vpcSecurityGroupIDSelector:
+                    #matchControllerRef: true
+                    matchLabels:
+                            ryt: wrng
+            allocatedStorage: 20
+            autoMinorVersionUpgrade: true
+            backupRetentionPeriod: 0
+            caCertificateIdentifier: rds-ca-2019
+            copyTagsToSnapshot: false
+            dbInstanceClass: db.t3.micro
+            deletionProtection: false
+            enableIAMDatabaseAuthentication: false
+            enablePerformanceInsights: false
+            engine: postgres
+            engineVersion: "13"
+            finalDBSnapshotIdentifier: sample
+            masterUsername: demo
+            multiAZ: false
+            port: 5432
+            preferredBackupWindow: 06:15-06:45
+            preferredMaintenanceWindow: sat:09:21-sat:09:51
+            publiclyAccessible: false
+            storageEncrypted: false
+            storageType: gp2
+          writeConnectionSecretToRef:
+            namespace: crossplane-system
+            name: daneil
+      patches:
+        - fromFieldPath: "metadata.uid"
+          toFieldPath: "spec.writeConnectionSecretToRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-postgresql"
+        - fromFieldPath: "spec.parameters.storageGB"
+          toFieldPath: "spec.forProvider.allocatedStorage"
+        - fromFieldPath: "spec.parameters.finalDBSnapshot"
+          toFieldPath: "spec.forProvider.finalDBSnapshotIdentifier"
+        - fromFieldPath: "spec.parameters.dbInstanceClass"
+          toFieldPath: "spec.forProvider.dbInstanceClass"
+        - fromFieldPath: "metadata.namespace"
+          toFieldPath: "spec.writeConnectionSecretToRef.namespace"
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "spec.writeConnectionSecretToRef.name"
+      connectionDetails:
+        - fromConnectionSecretKey: username
+        - fromConnectionSecretKey: password
+        - fromConnectionSecretKey: endpoint
+        - fromConnectionSecretKey: port
