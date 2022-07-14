@@ -6,8 +6,8 @@ spec:
   forProvider:
     region: us-east-1
     availabilityZone: us-east-1b
-    cidrBlock: 172.31.128.0/24
-    vpcId: vpc-7c242306
+    cidrBlock: 1.0.1.0/24
+    vpcId: vpc-id
     mapPublicIPOnLaunch: true
   providerConfigRef:
     name: awsprvcfg
