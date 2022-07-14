@@ -8,11 +8,11 @@ spec:
     description: "sample group"
     subnetIdRefs:
      - name: sample-subnet2
-     - name: subnet-f509b2b8
+     - name: subnet-f
     subnetIds: 
-     - subnet-05c62d63
-     - subnet-db5bf6d5
-     - subnet-05ab5a24
+     - subnet-a
+     - subnet-d
+     - subnet-c
   providerConfigRef:
     name: awsprvcfg
   providerRef:
