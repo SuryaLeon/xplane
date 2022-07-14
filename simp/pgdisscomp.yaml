@@ -22,7 +22,7 @@ spec:
           forProvider:
             dbSubnetGroupName: "default"
             region: sa-east-1
-            vpcSecurityGroupIds: ["sg-96c342b9"]
+            vpcSecurityGroupIds: ["vpcsgid"]
             allocatedStorage: 20
             autoMinorVersionUpgrade: true
             backupRetentionPeriod: 0
