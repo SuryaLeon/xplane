@@ -1,0 +1,12 @@
+apiVersion: apigatewayv2.aws.crossplane.io/v1alpha1
+kind: API
+metadata:
+  name: apocalypto
+spec:
+  forProvider:
+    region: us-east-1
+    name: apocalypto
+    protocolType: HTTP
+    #routeSelectionExpression: "GET /newroute"
+  providerConfigRef:
+    name: awsprvcfg
